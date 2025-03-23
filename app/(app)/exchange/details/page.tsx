@@ -13,6 +13,7 @@ export default function ExchangeDetailsPage() {
   const searchParams = useSearchParams();
   const { currencies, convertAmount } = useCurrencies();
 
+  // Use default values in case searchParams is null or undefined
   const fromCode = searchParams?.get("from") || "USD";
   const toCode = searchParams?.get("to") || "EUR";
   const initialAmount = searchParams?.get("amount") || "100";

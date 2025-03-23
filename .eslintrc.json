@@ -12,6 +12,7 @@
   "rules": {
     "quotes": ["error", "double"],
     "no-unused-vars": "off",
+    "no-undef": "warn",
     "react/no-unescaped-entities": "off"
   }
 }
