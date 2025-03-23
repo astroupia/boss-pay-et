@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react";
 import { PageHeader } from "@/components/layout/page-header";
 import { useSearchParams } from "next/navigation";
-import { useAccounts } from "@/hooks/use-accounts";
-import { useContacts } from "@/hooks/use-contacts";
+import { useAccounts } from "@/lib/hooks/use-accounts";
+import { useContacts } from "@/lib/hooks/use-contacts";
 import BottomNavigation from "@/components/layout/bottom-navigation";
 import { PageTransition } from "@/components/ui/page-transition";
 import { useRouter } from "next/navigation";
 import { TransferForm } from "@/components/transfer/transfer-form";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import {Account, Contact } from "@/types"
 
 export default function NewTransferPage() {
   const router = useRouter();
@@ -21,8 +22,8 @@ export default function NewTransferPage() {
   const { contacts, loading: loadingContacts } = useContacts();
   const searchParams = useSearchParams();
 
-  const [fromAccount, setFromAccount] = useState(null);
-  const [selectedContact, setSelectedContact] = useState(null);
+  const [fromAccount, setFromAccount] = useState<Account | null>(null);
+  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
 
   // Set default account when accounts are loaded
   useEffect(() => {
@@ -39,25 +40,53 @@ export default function NewTransferPage() {
       if (contactId) {
         const contact = contacts.find((c) => c.id === contactId);
         if (contact) {
-          setSelectedContact(contact);
+          setSelectedContact({
+            id: contact.id,
+            name: contact.name,
+            email: contact.email || "",
+            avatar: contact.avatar,
+            initial: contact.name.charAt(0).toUpperCase(),
+            accountNumber: contact.accountNumber,
+          });
         } else {
-          setSelectedContact(contacts[0]);
+          setSelectedContact({
+            id: contacts[0].id,
+            name: contacts[0].name,
+            email: contacts[0].email || "",
+            avatar: contacts[0].avatar,
+            initial: contacts[0].name.charAt(0).toUpperCase(),
+            accountNumber: contacts[0].accountNumber,
+          });
         }
       } else {
-        setSelectedContact(contacts[0]);
+        setSelectedContact({
+          id: contacts[0].id,
+          name: contacts[0].name,
+          email: contacts[0].email || "",
+          avatar: contacts[0].avatar,
+          initial: contacts[0].name.charAt(0).toUpperCase(),
+          accountNumber: contacts[0].accountNumber,
+        });
       }
     }
   }, [contacts, loadingContacts, searchParams]);
 
   const handleSubmit = async (amount: string, note: string) => {
-    // In a real app, this would call an API to process the transfer
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      // In a real app, this would call an API to process the transfer
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    router.push(
-      `/transfers/confirmation?amount=${amount}&currency=${
-        fromAccount?.currency || "USD"
-      }&recipient=${selectedContact?.name || "Recipient"}`
-    );
+      const encodedRecipient = encodeURIComponent(
+        selectedContact?.name || "Recipient"
+      );
+      router.push(
+        `/transfers/confirmation?amount=${amount}&currency=${
+          fromAccount?.currency || "USD"
+        }&recipient=${encodedRecipient}`
+      );
+    } catch (error) {
+      console.error("Transfer failed:", error);
+    }
   };
 
   const handleChangeContact = () => {
@@ -85,7 +114,7 @@ export default function NewTransferPage() {
           onChangeContact={handleChangeContact}
         />
 
-        <BottomNavigation activeItem="transfer" />
+        <BottomNavigation activeItem="transfers" />
       </div>
     </PageTransition>
   );
