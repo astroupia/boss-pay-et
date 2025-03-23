@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
-import { useCurrencies } from "@/app/(app)/hooks/use-currencies";
+import { useCurrencies } from "@/lib/hooks/use-currencies";
 import { ExchangeCard } from "@/components/ui/exchange-card";
 import type { Currency } from "@/types";
 

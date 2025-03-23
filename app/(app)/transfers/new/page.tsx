@@ -1,70 +1,76 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { PageHeader } from "@/components/layout/page-header"
-import { useSearchParams } from "next/navigation"
-import { useAccounts } from "@/hooks/use-accounts"
-import { useContacts } from "@/hooks/use-contacts"
-import BottomNavigation from "@/components/layout/bottom-navigation"
-import { PageTransition } from "@/components/ui/page-transition"
-import { useRouter } from "next/navigation"
-import { TransferForm } from "@/components/transfer/transfer-form"
-import { LoadingSpinner } from "@/components/ui/loading-spinner"
+import { useState, useEffect } from "react";
+import { PageHeader } from "@/components/layout/page-header";
+import { useSearchParams } from "next/navigation";
+import { useAccounts } from "@/hooks/use-accounts";
+import { useContacts } from "@/hooks/use-contacts";
+import BottomNavigation from "@/components/layout/bottom-navigation";
+import { PageTransition } from "@/components/ui/page-transition";
+import { useRouter } from "next/navigation";
+import { TransferForm } from "@/components/transfer/transfer-form";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function NewTransferPage() {
-  const router = useRouter()
-  const { accounts, getDefaultAccount, loading: loadingAccounts } = useAccounts()
-  const { contacts, loading: loadingContacts } = useContacts()
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const {
+    accounts,
+    getDefaultAccount,
+    loading: loadingAccounts,
+  } = useAccounts();
+  const { contacts, loading: loadingContacts } = useContacts();
+  const searchParams = useSearchParams();
 
-  const [fromAccount, setFromAccount] = useState(null)
-  const [selectedContact, setSelectedContact] = useState(null)
+  const [fromAccount, setFromAccount] = useState(null);
+  const [selectedContact, setSelectedContact] = useState(null);
 
   // Set default account when accounts are loaded
   useEffect(() => {
     if (!loadingAccounts && accounts.length > 0) {
-      setFromAccount(getDefaultAccount())
+      setFromAccount(getDefaultAccount());
     }
-  }, [accounts, getDefaultAccount, loadingAccounts])
+  }, [accounts, getDefaultAccount, loadingAccounts]);
 
   // Set default contact when contacts are loaded
   useEffect(() => {
     if (!loadingContacts && contacts.length > 0) {
       // Check for contact ID in URL params
-      const contactId = searchParams?.get("contact")
+      const contactId = searchParams?.get("contact");
       if (contactId) {
-        const contact = contacts.find((c) => c.id === contactId)
+        const contact = contacts.find((c) => c.id === contactId);
         if (contact) {
-          setSelectedContact(contact)
+          setSelectedContact(contact);
         } else {
-          setSelectedContact(contacts[0])
+          setSelectedContact(contacts[0]);
         }
       } else {
-        setSelectedContact(contacts[0])
+        setSelectedContact(contacts[0]);
       }
     }
-  }, [contacts, loadingContacts, searchParams])
+  }, [contacts, loadingContacts, searchParams]);
 
   const handleSubmit = async (amount: string, note: string) => {
     // In a real app, this would call an API to process the transfer
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     router.push(
-      `/transfers/confirmation?amount=${amount}&currency=${fromAccount?.currency || "USD"}&recipient=${selectedContact?.name || "Recipient"}`,
-    )
-  }
+      `/transfers/confirmation?amount=${amount}&currency=${
+        fromAccount?.currency || "USD"
+      }&recipient=${selectedContact?.name || "Recipient"}`
+    );
+  };
 
   const handleChangeContact = () => {
     // In a real app, this would open a contact selector
-    alert("Change contact functionality would be implemented here")
-  }
+    alert("Change contact functionality would be implemented here");
+  };
 
   if (loadingAccounts || loadingContacts) {
     return (
       <div className="min-h-screen bg-[#f8f9fa] dark:bg-gray-900 flex items-center justify-center">
         <LoadingSpinner size="lg" />
       </div>
-    )
+    );
   }
 
   return (
@@ -82,6 +88,5 @@ export default function NewTransferPage() {
         <BottomNavigation activeItem="transfer" />
       </div>
     </PageTransition>
-  )
+  );
 }
-

@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"
-import { PageHeader } from "@/components/layout/page-header"
-import { Button } from "@/components/ui/button"
-import { formatDate } from "@/lib/utils"
-import { CheckCircle, AlertTriangle, XCircle, Info } from "lucide-react"
-import type { Notification } from "@/types"
-import { useEffect, useState } from "react"
-import { useNotifications } from "@/app/hooks/use-notifications"
-import { PageTransition } from "@/components/ui/page-transition"
-import { LoadingSpinner } from "@/components/ui/loading-spinner"
+import { useRouter } from "next/navigation";
+import { PageHeader } from "@/components/layout/page-header";
+import { Button } from "@/components/ui/button";
+import { formatDate } from "@/lib/utils";
+import { CheckCircle, AlertTriangle, XCircle, Info } from "lucide-react";
+import type { Notification } from "@/types";
+import { useEffect, useState } from "react";
+import { useNotifications } from "@/lib/hooks/use-notifications";
+import { PageTransition } from "@/components/ui/page-transition";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 // Mock data for notifications
 const getNotificationById = (id: string): Notification => {
@@ -50,75 +50,79 @@ const getNotificationById = (id: string): Notification => {
       type: "success",
       read: false,
     },
-  }
+  };
 
-  return notifications[id] || notifications["1"] // Default to first notification if not found
-}
+  return notifications[id] || notifications["1"]; // Default to first notification if not found
+};
 
-export default function NotificationDetailsPage({ params }: { params: { id: string } }) {
-  const router = useRouter()
-  const { markAsRead } = useNotifications()
-  const [notification, setNotification] = useState<Notification | null>(null)
-  const [isMarked, setIsMarked] = useState(false)
+export default function NotificationDetailsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const router = useRouter();
+  const { markAsRead } = useNotifications();
+  const [notification, setNotification] = useState<Notification | null>(null);
+  const [isMarked, setIsMarked] = useState(false);
 
   useEffect(() => {
     // Get notification data
-    const notificationData = getNotificationById(params.id)
-    setNotification(notificationData)
+    const notificationData = getNotificationById(params.id);
+    setNotification(notificationData);
 
     // Mark as read only once
     if (!isMarked) {
-      markAsRead(params.id)
-      setIsMarked(true)
+      markAsRead(params.id);
+      setIsMarked(true);
     }
-  }, [params.id, markAsRead, isMarked])
+  }, [params.id, markAsRead, isMarked]);
 
   if (!notification) {
     return (
       <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center">
         <LoadingSpinner size="lg" />
       </div>
-    )
+    );
   }
 
   const getIcon = () => {
     switch (notification.type) {
       case "success":
-        return <CheckCircle className="h-10 w-10 text-white" />
+        return <CheckCircle className="h-10 w-10 text-white" />;
       case "warning":
-        return <AlertTriangle className="h-10 w-10 text-white" />
+        return <AlertTriangle className="h-10 w-10 text-white" />;
       case "error":
-        return <XCircle className="h-10 w-10 text-white" />
+        return <XCircle className="h-10 w-10 text-white" />;
       default:
-        return <Info className="h-10 w-10 text-white" />
+        return <Info className="h-10 w-10 text-white" />;
     }
-  }
+  };
 
   const getIconBgColor = () => {
     switch (notification.type) {
       case "success":
-        return "bg-green-500"
+        return "bg-green-500";
       case "warning":
-        return "bg-yellow-500"
+        return "bg-yellow-500";
       case "error":
-        return "bg-red-500"
+        return "bg-red-500";
       default:
-        return "bg-blue-500"
+        return "bg-blue-500";
     }
-  }
+  };
 
   const getCardBgColor = () => {
     switch (notification.type) {
       case "success":
-        return "bg-green-50"
+        return "bg-green-50";
       case "warning":
-        return "bg-yellow-50"
+        return "bg-yellow-50";
       case "error":
-        return "bg-red-50"
+        return "bg-red-50";
       default:
-        return "bg-blue-50"
+        return "bg-blue-50";
     }
-  }
+  };
 
   return (
     <PageTransition>
@@ -126,29 +130,41 @@ export default function NotificationDetailsPage({ params }: { params: { id: stri
         <PageHeader title="Notification Details" />
 
         <div className="p-4 space-y-4">
-          <div className={`${getCardBgColor()} rounded-xl p-6 border border-gray-100`}>
+          <div
+            className={`${getCardBgColor()} rounded-xl p-6 border border-gray-100`}
+          >
             <div className="flex flex-col items-center text-center">
-              <div className={`h-16 w-16 rounded-full ${getIconBgColor()} flex items-center justify-center mb-4`}>
+              <div
+                className={`h-16 w-16 rounded-full ${getIconBgColor()} flex items-center justify-center mb-4`}
+              >
                 {getIcon()}
               </div>
               <h1 className="text-xl font-bold mb-2">{notification.title}</h1>
               <p className="text-gray-600 mb-4">{notification.message}</p>
-              <div className="text-sm text-gray-500">{formatDate(notification.date)}</div>
+              <div className="text-sm text-gray-500">
+                {formatDate(notification.date)}
+              </div>
             </div>
           </div>
 
           <div className="flex space-x-2">
-            <Button onClick={() => router.back()} variant="outline" className="flex-1">
+            <Button
+              onClick={() => router.back()}
+              variant="outline"
+              className="flex-1"
+            >
               Back
             </Button>
 
-            <Button onClick={() => router.push("/")} className="flex-1 bg-[#0a0b25]">
+            <Button
+              onClick={() => router.push("/")}
+              className="flex-1 bg-[#0a0b25]"
+            >
               Go to Home
             </Button>
           </div>
         </div>
       </div>
     </PageTransition>
-  )
+  );
 }
-
