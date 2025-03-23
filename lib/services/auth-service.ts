@@ -1,11 +1,11 @@
-import Cookies from "js-cookie"
-import type { AuthResponse, AuthFormData, User } from "@/types"
+import Cookies from "js-cookie";
+import type { AuthResponse, AuthFormData, User } from "@/types";
 
 // Constants for cookie names and expiration
-const AUTH_TOKEN_COOKIE = "auth-token"
-const ONBOARDING_COMPLETE_COOKIE = "onboarding-complete"
-const AUTH_TOKEN_EXPIRY = 7 // days
-const ONBOARDING_EXPIRY = 30 // days
+const AUTH_TOKEN_COOKIE = "auth-token";
+const ONBOARDING_COMPLETE_COOKIE = "onboarding-complete";
+const AUTH_TOKEN_EXPIRY = 7; // days
+const ONBOARDING_EXPIRY = 30; // days
 
 /**
  * Authentication service that integrates with BetterAuth
@@ -29,33 +29,35 @@ export const AuthService = {
           .join(" "),
         email: email,
         avatar: "/placeholder.svg?height=100&width=100",
-      }
+      };
 
       // Generate a mock token
-      const mockToken = btoa(`${mockUser.id}:${mockUser.email}:${Date.now()}`)
+      const mockToken = btoa(`${mockUser.id}:${mockUser.email}:${Date.now()}`);
 
       const mockResponse: AuthResponse = {
         success: true,
         token: mockToken,
         user: mockUser,
-      }
+      };
 
       // Set auth token cookie with proper options
-      this.setAuthToken(mockResponse.token)
+      if (mockResponse.token) {
+        this.setAuthToken(mockResponse.token);
+      }
 
       // Set onboarding complete cookie
-      this.setOnboardingComplete()
+      this.setOnboardingComplete();
 
       // Simulate network delay for a more realistic experience
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      return mockResponse
+      return mockResponse;
     } catch (error) {
-      console.error("Sign in error:", error)
+      console.error("Sign in error:", error);
       return {
         success: false,
         message: "Invalid email or password",
-      }
+      };
     }
   },
 
@@ -71,31 +73,33 @@ export const AuthService = {
         name: data.name || data.email.split("@")[0],
         email: data.email,
         avatar: "/placeholder.svg?height=100&width=100",
-      }
+      };
 
       // Generate a mock token
-      const mockToken = btoa(`${mockUser.id}:${mockUser.email}:${Date.now()}`)
+      const mockToken = btoa(`${mockUser.id}:${mockUser.email}:${Date.now()}`);
 
       const mockResponse: AuthResponse = {
         success: true,
         message: "Account created successfully",
         token: mockToken,
         user: mockUser,
-      }
+      };
 
       // Set auth token cookie with proper options
-      this.setAuthToken(mockResponse.token)
+      if (mockResponse.token) {
+        this.setAuthToken(mockResponse.token);
+      }
 
       // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      return mockResponse
+      return mockResponse;
     } catch (error) {
-      console.error("Sign up error:", error)
+      console.error("Sign up error:", error);
       return {
         success: false,
         message: "Failed to create account",
-      }
+      };
     }
   },
 
@@ -104,19 +108,19 @@ export const AuthService = {
    */
   async getCurrentUser(): Promise<User | null> {
     try {
-      const token = this.getAuthToken()
+      const token = this.getAuthToken();
 
       if (!token) {
-        return null
+        return null;
       }
 
       // In a real implementation, this would decode the token or call an API
       // For MVP, extract user info from the mock token
       try {
-        const tokenParts = atob(token).split(":")
+        const tokenParts = atob(token).split(":");
         if (tokenParts.length >= 2) {
-          const id = tokenParts[0]
-          const email = tokenParts[1]
+          const id = tokenParts[0];
+          const email = tokenParts[1];
 
           return {
             id,
@@ -127,10 +131,10 @@ export const AuthService = {
               .join(" "),
             email,
             avatar: "/placeholder.svg?height=100&width=100",
-          }
+          };
         }
       } catch (e) {
-        console.error("Error parsing token:", e)
+        console.error("Error parsing token:", e);
       }
 
       // Fallback user data
@@ -139,10 +143,10 @@ export const AuthService = {
         name: "Guest User",
         email: "guest@example.com",
         avatar: "/placeholder.svg?height=100&width=100",
-      }
+      };
     } catch (error) {
-      console.error("Get current user error:", error)
-      return null
+      console.error("Get current user error:", error);
+      return null;
     }
   },
 
@@ -151,40 +155,40 @@ export const AuthService = {
    */
   logout(): void {
     // Remove cookies
-    Cookies.remove(AUTH_TOKEN_COOKIE, { path: "/" })
-    Cookies.remove(ONBOARDING_COMPLETE_COOKIE, { path: "/" })
+    Cookies.remove(AUTH_TOKEN_COOKIE, { path: "/" });
+    Cookies.remove(ONBOARDING_COMPLETE_COOKIE, { path: "/" });
 
     // Clear localStorage
     try {
-      localStorage.removeItem(AUTH_TOKEN_COOKIE)
-      localStorage.removeItem(ONBOARDING_COMPLETE_COOKIE)
+      localStorage.removeItem(AUTH_TOKEN_COOKIE);
+      localStorage.removeItem(ONBOARDING_COMPLETE_COOKIE);
     } catch (e) {
-      console.error("Could not clear localStorage:", e)
+      console.error("Could not clear localStorage:", e);
     }
 
     // Force reload to clear any in-memory state
-    window.location.href = "/auth/signin"
+    window.location.href = "/auth/signin";
   },
 
   /**
    * Check if the user is authenticated
    */
   isAuthenticated(): boolean {
-    return !!this.getAuthToken()
+    return !!this.getAuthToken();
   },
 
   /**
    * Check if the user has completed onboarding
    */
   hasCompletedOnboarding(): boolean {
-    const cookie = Cookies.get(ONBOARDING_COMPLETE_COOKIE)
-    if (cookie) return true
+    const cookie = Cookies.get(ONBOARDING_COMPLETE_COOKIE);
+    if (cookie) return true;
 
     // Check localStorage as fallback
     try {
-      return localStorage.getItem(ONBOARDING_COMPLETE_COOKIE) === "true"
+      return localStorage.getItem(ONBOARDING_COMPLETE_COOKIE) === "true";
     } catch (e) {
-      return false
+      return false;
     }
   },
 
@@ -203,13 +207,13 @@ export const AuthService = {
             sameSite: "lax",
           }
         : {}),
-    })
+    });
 
     // Also set in localStorage as a fallback
     try {
-      localStorage.setItem(AUTH_TOKEN_COOKIE, token)
+      localStorage.setItem(AUTH_TOKEN_COOKIE, token);
     } catch (e) {
-      console.error("Could not set token in localStorage:", e)
+      console.error("Could not set token in localStorage:", e);
     }
   },
 
@@ -218,22 +222,22 @@ export const AuthService = {
    */
   getAuthToken(): string | undefined {
     // Try to get from cookie first
-    const cookieToken = Cookies.get(AUTH_TOKEN_COOKIE)
-    if (cookieToken) return cookieToken
+    const cookieToken = Cookies.get(AUTH_TOKEN_COOKIE);
+    if (cookieToken) return cookieToken;
 
     // Fall back to localStorage if cookie is not available
     try {
-      const localToken = localStorage.getItem(AUTH_TOKEN_COOKIE)
+      const localToken = localStorage.getItem(AUTH_TOKEN_COOKIE);
       if (localToken) {
         // Restore the cookie from localStorage
-        this.setAuthToken(localToken)
-        return localToken
+        this.setAuthToken(localToken);
+        return localToken;
       }
     } catch (e) {
-      console.error("Could not get token from localStorage:", e)
+      console.error("Could not get token from localStorage:", e);
     }
 
-    return undefined
+    return undefined;
   },
 
   /**
@@ -250,16 +254,15 @@ export const AuthService = {
             sameSite: "lax",
           }
         : {}),
-    })
+    });
 
     // Also set in localStorage as a fallback
     try {
-      localStorage.setItem(ONBOARDING_COMPLETE_COOKIE, "true")
+      localStorage.setItem(ONBOARDING_COMPLETE_COOKIE, "true");
     } catch (e) {
-      console.error("Could not set onboarding status in localStorage:", e)
+      console.error("Could not set onboarding status in localStorage:", e);
     }
   },
 
   // Other methods omitted for brevity...
-}
-
+};
