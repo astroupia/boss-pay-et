@@ -46,11 +46,16 @@ export default function SignUpPage() {
 
     if (!validate()) return;
 
-    setLoading(true);
 
+    setLoading(true)
     try {
-      const response = await signup(formData);
-
+      const response = await signup({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password || "",
+        confirmPassword: formData.confirmPassword || ""
+      })
+      
       if (response.success) {
         router.push("/auth/verify-phone");
       } else {
@@ -90,6 +95,7 @@ export default function SignUpPage() {
               setFormData((prev) => ({ ...prev, email: value }))
             }
             error={errors.email}
+
             autoComplete="email"
           />
 

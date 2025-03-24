@@ -18,19 +18,19 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { ArrowUpRight, CreditCard, Wallet, ArrowDownLeft } from "lucide-react";
 import type { Account, Transaction } from "@/types";
 
-function HomeContent() {
-  const { isAuthenticated } = useAuth();
-  const router = useRouter();
-  const { accounts, loading: loadingAccounts } = useAccounts();
-  const { transactions, loading: loadingTransactions } = useTransactions();
-  const recentTransactions = transactions.slice(0, 5);
+export default function HomePage() {
+  const { isAuthenticated } = useAuth()
+  const router = useRouter()
+  const { accounts } = useAccounts()
+  const { transactions } = useTransactions()
+  const recentTransactions = transactions.slice(0, 5)
 
   // Redirect if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push(routes.auth.signIn);
+      router.push(routes.auth.signIn)
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router])
 
   if (!isAuthenticated) {
     return null;

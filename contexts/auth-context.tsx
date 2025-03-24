@@ -155,7 +155,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     user,
     loading,
     isAuthenticated: !!user,
-    // authInitialized,
     hasCompletedOnboarding: AuthService.hasCompletedOnboarding(),
     login,
     signup,
