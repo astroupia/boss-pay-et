@@ -95,3 +95,5 @@ export default function NotificationsPage() {
     </AppLayout>
   );
 }
+
+// export const dynamic = "force-dynamic";

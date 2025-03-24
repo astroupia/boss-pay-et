@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"
-import { CurvedHeader } from "@/components/profile/curved-header"
-import { Button } from "@/components/ui/button"
-import { formatCurrency } from "@/lib/utils"
-import { Download, RefreshCw, ArrowLeft } from "lucide-react"
-import type { TransactionDetails } from "@/types/transaction"
-import { PageTransition } from "@/components/ui/page-transition"
+import { useRouter } from "next/navigation";
+import { CurvedHeader } from "@/components/profile/curved-header";
+import { Button } from "@/components/ui/button";
+import { formatCurrency } from "@/lib/utils";
+import { Download, RefreshCw, ArrowLeft } from "lucide-react";
+import type { TransactionDetails } from "@/types/transaction";
+import { PageTransition } from "@/components/ui/page-transition";
 
 // Mock data - in a real app, this would come from an API or context
 const mockTransactions: { [key: string]: TransactionDetails } = {
@@ -25,28 +25,34 @@ const mockTransactions: { [key: string]: TransactionDetails } = {
     status: "completed",
     name: "Hillary Holmes",
   },
-}
+};
 
-export default function TransactionDetailsPage({ params }: { params: { id: string } }) {
-  const router = useRouter()
-  const transaction = mockTransactions[params.id]
+export default function TransactionDetailsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const router = useRouter();
+  const transaction = mockTransactions[params.id];
 
   if (!transaction) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
-        <p className="text-gray-500 dark:text-gray-400">Transaction not found</p>
+        <p className="text-gray-500 dark:text-gray-400">
+          Transaction not found
+        </p>
       </div>
-    )
+    );
   }
 
   const handleRepeatTransfer = () => {
-    router.push(`/transfers/new?recipient=${transaction.recipient}`)
-  }
+    router.push(`/transfers/new?recipient=${transaction.recipient}`);
+  };
 
   const handleDownloadPdf = () => {
     // In a real app, this would download a PDF
-    console.log("Downloading PDF...")
-  }
+    console.log("Downloading PDF...");
+  };
 
   return (
     <PageTransition>
@@ -61,7 +67,9 @@ export default function TransactionDetailsPage({ params }: { params: { id: strin
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-white text-lg font-medium">Transaction Details</h1>
+          <h1 className="text-white text-lg font-medium">
+            Transaction Details
+          </h1>
         </div>
 
         <CurvedHeader className="flex flex-col items-center pt-6 pb-12">
@@ -73,7 +81,13 @@ export default function TransactionDetailsPage({ params }: { params: { id: strin
           </p>
           <div className="mt-4 bg-green-500 rounded-full p-4">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M20 6L9 17L4 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M20 6L9 17L4 12"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </div>
         </CurvedHeader>
@@ -82,18 +96,25 @@ export default function TransactionDetailsPage({ params }: { params: { id: strin
           <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm space-y-4 border border-gray-100 dark:border-gray-700">
             <div className="flex justify-between">
               <span className="text-gray-500 dark:text-gray-400">Sent to</span>
-              <span className="font-medium text-gray-900 dark:text-white">{transaction.recipient}</span>
+              <span className="font-medium text-gray-900 dark:text-white">
+                {transaction.recipient}
+              </span>
             </div>
 
             <div className="flex justify-between">
               <span className="text-gray-500 dark:text-gray-400">Card</span>
-              <span className="font-medium text-gray-900 dark:text-white">{transaction.cardNumber}</span>
+              <span className="font-medium text-gray-900 dark:text-white">
+                {transaction.cardNumber}
+              </span>
             </div>
 
             <div className="flex justify-between">
               <span className="text-gray-500 dark:text-gray-400">Amount</span>
               <span className="font-medium text-gray-900 dark:text-white">
-                {formatCurrency(Math.abs(transaction.amount), transaction.currency)}
+                {formatCurrency(
+                  Math.abs(transaction.amount),
+                  transaction.currency
+                )}
               </span>
             </div>
 
@@ -105,9 +126,14 @@ export default function TransactionDetailsPage({ params }: { params: { id: strin
             </div>
 
             <div className="flex justify-between">
-              <span className="text-gray-500 dark:text-gray-400">Residual balance</span>
+              <span className="text-gray-500 dark:text-gray-400">
+                Residual balance
+              </span>
               <span className="font-medium text-gray-900 dark:text-white">
-                {formatCurrency(transaction.residualBalance, transaction.currency)}
+                {formatCurrency(
+                  transaction.residualBalance,
+                  transaction.currency
+                )}
               </span>
             </div>
           </div>
@@ -132,6 +158,5 @@ export default function TransactionDetailsPage({ params }: { params: { id: strin
         </div>
       </div>
     </PageTransition>
-  )
+  );
 }
-

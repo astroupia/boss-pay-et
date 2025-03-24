@@ -66,5 +66,4 @@ export const routes = {
     notifications: "/notifications",
     settings: "/settings",
   },
-}
-
+};

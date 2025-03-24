@@ -10,7 +10,7 @@ import { PageTransition } from "@/components/ui/page-transition";
 import { useRouter } from "next/navigation";
 import { TransferForm } from "@/components/transfer/transfer-form";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import {Account, Contact } from "@/types"
+import { Account, Contact } from "@/types";
 
 export default function NewTransferPage() {
   const router = useRouter();

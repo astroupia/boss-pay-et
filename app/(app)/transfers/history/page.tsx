@@ -284,8 +284,8 @@ export default function TransactionHistoryPage() {
                 No transactions found
               </h3>
               <p className="text-gray-500 dark:text-gray-400 text-center mt-2">
-                Try adjusting your search or filter to find what you&apos;re
-                looking for.
+                Try adjusting your search or filter to find what you're looking
+                for.
               </p>
             </div>
           ) : (
@@ -323,3 +323,5 @@ export default function TransactionHistoryPage() {
     </PageTransition>
   );
 }
+
+export const dynamic = "force-dynamic";

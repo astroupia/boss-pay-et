@@ -12,7 +12,6 @@ export const metadata: Metadata = {
   title: "BossPayet - Mobile Banking",
   description: "Modern mobile banking solution",
   manifest: "/manifest.json",
-  themeColor: "#0a0b25",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
