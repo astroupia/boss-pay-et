@@ -17,7 +17,7 @@ import { useTransactions } from "@/lib/hooks/use-transactions"
 import { useContacts } from "@/lib/hooks/use-contacts"
 
 export default function Dashboard() {
-  const { user, loading, authInitialized } = useAuth()
+  const { user, loading} = useAuth()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const { accounts } = useAccounts()
@@ -25,8 +25,7 @@ export default function Dashboard() {
   const { contacts } = useContacts()
 
   useEffect(() => {
-    // Only proceed if auth is initialized
-    if (!authInitialized) return
+    
 
     // If not loading and no user, redirect to sign in
     if (!loading && !user) {
@@ -38,7 +37,7 @@ export default function Dashboard() {
     if (user) {
       setIsLoading(false)
     }
-  }, [user, loading, authInitialized, router])
+  }, [user, loading, router])
 
   // Show loading state while checking authentication
   if (isLoading || loading) {
@@ -96,7 +95,7 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col min-h-screen bg-[#0a0b25]">
       {/* Header */}
-      <UserHeader user={user} rightElement={cardIcon} />
+      <UserHeader user={user || undefined} rightElement={cardIcon} />
 
       {/* Card Carousel */}
       <div className="px-4 py-2 overflow-x-auto">

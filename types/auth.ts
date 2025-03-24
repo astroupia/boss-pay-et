@@ -19,6 +19,7 @@ export interface AuthFormData {
   email: string
   password?: string
   phoneNumber?: string
+  confirmPassword? : string
 }
 
 export interface AuthContextType {

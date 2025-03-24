@@ -31,7 +31,7 @@ export default function SignUpPage() {
     if (!formData.email) newErrors.email = "Email is required"
     if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email is invalid"
     if (!formData.password) newErrors.password = "Password is required"
-    if (formData.password.length < 6) newErrors.password = "Password must be at least 6 characters"
+    if (formData.password!.length < 6) newErrors.password = "Password must be at least 6 characters"
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match"
     }
@@ -46,9 +46,13 @@ export default function SignUpPage() {
     if (!validate()) return
 
     setLoading(true)
-
     try {
-      const response = await signup(formData)
+      const response = await signup({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password || "",
+        confirmPassword: formData.confirmPassword || ""
+      })
 
       if (response.success) {
         router.push("/auth/verify-phone")
@@ -73,7 +77,6 @@ export default function SignUpPage() {
             value={formData.name || ""}
             onChange={(value) => setFormData((prev) => ({ ...prev, name: value }))}
             error={errors.name}
-            required
             autoComplete="name"
           />
 
@@ -84,7 +87,7 @@ export default function SignUpPage() {
             value={formData.email}
             onChange={(value) => setFormData((prev) => ({ ...prev, email: value }))}
             error={errors.email}
-            required
+          
             autoComplete="email"
           />
 
@@ -92,10 +95,9 @@ export default function SignUpPage() {
             icon={<Lock className="h-5 w-5" />}
             type="password"
             placeholder="Enter your password"
-            value={formData.password}
+            value={formData.password || ""}
             onChange={(value) => setFormData((prev) => ({ ...prev, password: value }))}
             error={errors.password}
-            required
             autoComplete="new-password"
           />
 
@@ -106,7 +108,6 @@ export default function SignUpPage() {
             value={formData.confirmPassword || ""}
             onChange={(value) => setFormData((prev) => ({ ...prev, confirmPassword: value }))}
             error={errors.confirmPassword}
-            required
             autoComplete="new-password"
           />
 

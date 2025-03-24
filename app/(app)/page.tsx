@@ -17,7 +17,7 @@ import { EmptyState } from "@/components/ui/empty-state"
 import { ArrowUpRight, CreditCard, Wallet, ArrowDownLeft } from "lucide-react"
 
 export default function HomePage() {
-  const { isAuthenticated, authInitialized } = useAuth()
+  const { isAuthenticated } = useAuth()
   const router = useRouter()
   const { accounts } = useAccounts()
   const { transactions } = useTransactions()
@@ -25,10 +25,10 @@ export default function HomePage() {
 
   // Redirect if not authenticated
   useEffect(() => {
-    if (authInitialized && !isAuthenticated) {
+    if (!isAuthenticated) {
       router.push(routes.auth.signIn)
     }
-  }, [authInitialized, isAuthenticated, router])
+  }, [isAuthenticated, router])
 
   if (!isAuthenticated) {
     return null
