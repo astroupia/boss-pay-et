@@ -3,9 +3,9 @@ import type React from "react";
 
 // Common types
 export interface User {
-  id: string;
-  name: string;
-  email: string;
+  id?: string;
+  name?: string;
+  email?: string;
   avatar?: string;
   phoneNumber?: string;
 }
@@ -37,7 +37,7 @@ export interface Transaction {
 }
 
 export interface Contact {
-  email: string;
+  email?: string;
   id: string;
   name: string;
   initial: string;

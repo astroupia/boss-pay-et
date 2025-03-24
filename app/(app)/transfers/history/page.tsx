@@ -1,16 +1,16 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { PageHeader } from "@/components/layout/page-header";
-import { TransactionItemV2 } from "@/components/transactions/transaction-item-v2";
-import { Input } from "@/components/ui/input";
-import { Search, Calendar } from "lucide-react";
-import BottomNavigation from "@/components/layout/bottom-navigation";
-import type { TransactionDetails } from "@/types/transaction";
-import { motion } from "framer-motion";
-import { PageTransition } from "@/components/ui/page-transition";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react"
+import { PageHeader } from "@/components/layout/page-header"
+import { TransactionItemV2 } from "@/components/transactions/transaction-item-v2"
+import { Input } from "@/components/ui/input"
+import { Search, Calendar } from "lucide-react"
+import BottomNavigation from "@/components/layout/bottom-navigation"
+import type { TransactionDetails } from "@/types/transaction"
+import { motion } from "framer-motion"
+import { PageTransition } from "@/components/ui/page-transition"
+import { LoadingSpinner } from "@/components/ui/loading-spinner"
+import { Button } from "@/components/ui/button"
 
 // Mock data for transactions
 const mockTransactions: TransactionDetails[] = [
@@ -134,84 +134,78 @@ const mockTransactions: TransactionDetails[] = [
     type: "outgoing",
     status: "completed",
   },
-];
+]
 
 // Group transactions by date
 const groupTransactionsByDate = (transactions: TransactionDetails[]) => {
-  const groups: { [key: string]: TransactionDetails[] } = {};
+  const groups: { [key: string]: TransactionDetails[] } = {}
 
   transactions.forEach((transaction) => {
     if (!groups[transaction.date]) {
-      groups[transaction.date] = [];
+      groups[transaction.date] = []
     }
-    groups[transaction.date].push(transaction);
-  });
+    groups[transaction.date].push(transaction)
+  })
 
   return Object.entries(groups).map(([date, transactions]) => ({
     date,
     transactions,
-  }));
-};
+  }))
+}
 
 export default function TransactionHistoryPage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredTransactions, setFilteredTransactions] =
-    useState(mockTransactions);
-  const [loading, setLoading] = useState(true);
-  const [activeFilter, setActiveFilter] = useState<
-    "all" | "incoming" | "outgoing"
-  >("all");
+  const [searchQuery, setSearchQuery] = useState("")
+  const [filteredTransactions, setFilteredTransactions] = useState(mockTransactions)
+  const [loading, setLoading] = useState(true)
+  const [activeFilter, setActiveFilter] = useState<"all" | "incoming" | "outgoing">("all")
 
   useEffect(() => {
     // Simulate loading
     const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+      setLoading(false)
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [])
 
   // Filter transactions based on search query and filter type
   const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    applyFilters(query, activeFilter);
-  };
+    setSearchQuery(query)
+    applyFilters(query, activeFilter)
+  }
 
-  const applyFilters = (
-    query: string,
-    filter: "all" | "incoming" | "outgoing"
-  ) => {
-    let filtered = mockTransactions;
+  const applyFilters = (query: string, filter: "all" | "incoming" | "outgoing") => {
+    let filtered = mockTransactions
 
     // Apply search filter
     if (query) {
       filtered = filtered.filter(
         (transaction) =>
           transaction.name.toLowerCase().includes(query.toLowerCase()) ||
-          transaction.category.toLowerCase().includes(query.toLowerCase())
-      );
+          transaction.category.toLowerCase().includes(query.toLowerCase()),
+      )
     }
 
     // Apply type filter
     if (filter !== "all") {
-      filtered = filtered.filter((transaction) => transaction.type === filter);
+      filtered = filtered.filter((transaction) => transaction.type === filter)
     }
 
-    setFilteredTransactions(filtered);
-  };
+    setFilteredTransactions(filtered)
+  }
 
   const handleFilterChange = (filter: "all" | "incoming" | "outgoing") => {
-    setActiveFilter(filter);
-    applyFilters(searchQuery, filter);
-  };
+    setActiveFilter(filter)
+    applyFilters(searchQuery, filter)
+  }
 
-  const transactionGroups = groupTransactionsByDate(filteredTransactions);
+  const transactionGroups = groupTransactionsByDate(filteredTransactions)
 
   if (loading) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
         <LoadingSpinner size="lg" />
       </div>
-    );
+    )
   }
 
   return (
@@ -235,9 +229,7 @@ export default function TransactionHistoryPage() {
               variant={activeFilter === "all" ? "default" : "outline"}
               size="sm"
               onClick={() => handleFilterChange("all")}
-              className={
-                activeFilter === "all" ? "bg-[#0a0b25] dark:bg-blue-600" : ""
-              }
+              className={activeFilter === "all" ? "bg-[#0a0b25] dark:bg-blue-600" : ""}
             >
               All
             </Button>
@@ -246,9 +238,7 @@ export default function TransactionHistoryPage() {
               size="sm"
               onClick={() => handleFilterChange("incoming")}
               className={
-                activeFilter === "incoming"
-                  ? "bg-green-600"
-                  : "text-green-600 border-green-200 dark:border-green-800"
+                activeFilter === "incoming" ? "bg-green-600" : "text-green-600 border-green-200 dark:border-green-800"
               }
             >
               Incoming
@@ -257,11 +247,7 @@ export default function TransactionHistoryPage() {
               variant={activeFilter === "outgoing" ? "default" : "outline"}
               size="sm"
               onClick={() => handleFilterChange("outgoing")}
-              className={
-                activeFilter === "outgoing"
-                  ? "bg-[#0a0b25] dark:bg-blue-600"
-                  : ""
-              }
+              className={activeFilter === "outgoing" ? "bg-[#0a0b25] dark:bg-blue-600" : ""}
             >
               Outgoing
             </Button>
@@ -280,12 +266,9 @@ export default function TransactionHistoryPage() {
               <div className="h-16 w-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
                 <Search className="h-8 w-8 text-gray-400" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                No transactions found
-              </h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white">No transactions found</h3>
               <p className="text-gray-500 dark:text-gray-400 text-center mt-2">
-                Try adjusting your search or filter to find what you&apos;re
-                looking for.
+                Try adjusting your search or filter to find what you're looking for.
               </p>
             </div>
           ) : (
@@ -297,9 +280,7 @@ export default function TransactionHistoryPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: groupIndex * 0.05 }}
                 >
-                  <h3 className="text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">
-                    {group.date}
-                  </h3>
+                  <h3 className="text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">{group.date}</h3>
                   <div className="space-y-2">
                     {group.transactions.map((transaction, index) => (
                       <motion.div
@@ -321,5 +302,6 @@ export default function TransactionHistoryPage() {
         <BottomNavigation activeItem="history" />
       </div>
     </PageTransition>
-  );
+  )
 }
+
