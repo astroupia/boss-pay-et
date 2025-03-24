@@ -1,34 +1,33 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
-import { NotificationCard } from "@/components/ui/notification-card";
-import { useNotifications } from "@/lib/hooks/use-notifications";
-import { AppLayout } from "@/components/layout/app-layout";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { AnimatedCard } from "@/components/ui/animated-card";
-import { motion } from "framer-motion";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Search } from "lucide-react"
+import { NotificationCard } from "@/components/ui/notification-card"
+import { useNotifications } from "@/app/(app)/hooks/use-notifications"
+import { AppLayout } from "@/components/layout/app-layout"
+import { LoadingSpinner } from "@/components/ui/loading-spinner"
+import { AnimatedCard } from "@/components/ui/animated-card"
+import { motion } from "framer-motion"
 
 export default function NotificationsPage() {
-  const router = useRouter();
-  const { notifications, markAllAsRead, loading } = useNotifications();
-  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter()
+  const { notifications, markAllAsRead, loading } = useNotifications()
+  const [searchQuery, setSearchQuery] = useState("")
 
   const filteredNotifications = searchQuery
     ? notifications.filter(
         (n) =>
           n.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (n.message &&
-            n.message.toLowerCase().includes(searchQuery.toLowerCase()))
+          (n.message && n.message.toLowerCase().includes(searchQuery.toLowerCase())),
       )
-    : notifications;
+    : notifications
 
   const handleNotificationClick = (id: string) => {
-    router.push(`/notifications/${id}`);
-  };
+    router.push(`/notifications/${id}`)
+  }
 
   if (loading) {
     return (
@@ -37,16 +36,14 @@ export default function NotificationsPage() {
           <LoadingSpinner size="lg" />
         </div>
       </AppLayout>
-    );
+    )
   }
 
   return (
     <AppLayout title="Notifications">
       <div className="p-4">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-medium text-gray-900 dark:text-white">
-            Recent Notifications
-          </h2>
+          <h2 className="text-lg font-medium text-gray-900 dark:text-white">Recent Notifications</h2>
           {notifications.some((n) => !n.read) && (
             <Button
               variant="ghost"
@@ -69,11 +66,7 @@ export default function NotificationsPage() {
           />
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="space-y-3"
-        >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
           {filteredNotifications.length > 0 ? (
             filteredNotifications.map((notification, index) => (
               <AnimatedCard key={notification.id} delay={index * 0.05}>
@@ -85,13 +78,12 @@ export default function NotificationsPage() {
             ))
           ) : (
             <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              {searchQuery
-                ? `No notifications found matching "${searchQuery}"`
-                : "No notifications yet"}
+              {searchQuery ? `No notifications found matching "${searchQuery}"` : "No notifications yet"}
             </div>
           )}
         </motion.div>
       </div>
     </AppLayout>
-  );
+  )
 }
+
