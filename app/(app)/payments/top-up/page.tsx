@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { PageHeader } from "@/components/layout/page-header"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { CardSelector } from "@/components/ui/card-selector"
-import { PaymentOption } from "@/components/ui/payment-option"
-import { SectionHeader } from "@/components/ui/section-header"
-import { CreditCard, Smartphone, DollarSign } from "lucide-react"
-import type { Account } from "@/types"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { PageHeader } from "@/components/layout/page-header";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { CardSelector } from "@/components/ui/card-selector";
+import { PaymentOption } from "@/components/ui/payment-option";
+import { SectionHeader } from "@/components/ui/section-header";
+import { CreditCard, Smartphone, DollarSign } from "lucide-react";
+import type { Account } from "@/types";
 
 // Mock data
 const mockAccounts: Account[] = [
@@ -34,51 +34,61 @@ const mockAccounts: Account[] = [
     currency: "EUR",
     expiryDate: "09/25",
   },
-]
+];
 
-type TopUpMethod = "card" | "mobile"
+type TopUpMethod = "card" | "mobile";
 
 export default function TopUpPaymentPage() {
-  const router = useRouter()
-  const [selectedAccount, setSelectedAccount] = useState<Account>(mockAccounts[0])
-  const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>("card")
-  const [amount, setAmount] = useState("")
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const [selectedAccount, setSelectedAccount] = useState<Account>(
+    mockAccounts[0]
+  );
+  const [topUpMethod, setTopUpMethod] = useState<TopUpMethod>("card");
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // Quick amount options
-  const quickAmounts = [50, 100, 200, 500]
+  const quickAmounts = [50, 100, 200, 500];
 
   const handleQuickAmount = (value: number) => {
-    setAmount(value.toString())
-  }
+    setAmount(value.toString());
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
     try {
       // In a real app, this would call an API
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       if (topUpMethod === "card") {
-        router.push("/payments/card?topUp=true")
+        router.push("/payments/card?topUp=true");
       } else {
-        router.push(`/payments/success?amount=${amount}&currency=${selectedAccount.currency}`)
+        router.push(
+          `/payments/success?amount=${amount}&currency=${selectedAccount.currency}`
+        );
       }
     } catch (error) {
-      console.error("Top-up failed:", error)
-      router.push(`/payments/error?amount=${amount}&currency=${selectedAccount.currency}`)
+      console.error("Top-up failed:", error);
+      router.push(
+        `/payments/error?amount=${amount}&currency=${selectedAccount.currency}`
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-[#f8f9fa]">
       <PageHeader title="Top-Up" />
 
       <form onSubmit={handleSubmit} className="p-4 space-y-4">
-        <CardSelector accounts={mockAccounts} onSelect={setSelectedAccount} defaultSelected={selectedAccount.id} />
+        <CardSelector
+          accounts={mockAccounts}
+          onSelect={setSelectedAccount}
+          defaultSelected={selectedAccount.id}
+        />
 
         <SectionHeader title="Top-up method" />
 
@@ -109,7 +119,9 @@ export default function TopUpPaymentPage() {
             </div>
             <Input
               value={amount}
-              onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ""))}
+              onChange={(e) =>
+                setAmount(e.target.value.replace(/[^0-9.]/g, ""))
+              }
               className="pl-14 text-lg"
               placeholder="0.00"
             />
@@ -133,11 +145,14 @@ export default function TopUpPaymentPage() {
           </div>
         </div>
 
-        <Button type="submit" className="w-full bg-[#0a0b25] hover:bg-[#1a1b35]" disabled={loading || !amount}>
+        <Button
+          type="submit"
+          className="w-full bg-[#0a0b25] hover:bg-[#1a1b35]"
+          disabled={loading || !amount}
+        >
           {loading ? "Processing..." : "Continue"}
         </Button>
       </form>
     </div>
-  )
+  );
 }
-

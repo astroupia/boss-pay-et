@@ -1,83 +1,85 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { PageHeader } from "@/components/layout/page-header"
-import { ProfileAvatar } from "@/components/profile/profile-avatar"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import type { PersonalInfoFormData } from "@/types/profile"
-import { PageTransition } from "@/components/ui/page-transition"
-import { FormField } from "@/components/ui/form-field"
-import { motion } from "framer-motion"
-import { LoadingSpinner } from "@/components/ui/loading-spinner"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { PageHeader } from "@/components/layout/page-header";
+import { ProfileAvatar } from "@/components/profile/profile-avatar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import type { PersonalInfoFormData } from "@/types/profile";
+import { PageTransition } from "@/components/ui/page-transition";
+import { FormField } from "@/components/ui/form-field";
+import { motion } from "framer-motion";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function EditProfilePage() {
-  const router = useRouter()
+  const router = useRouter();
   const [formData, setFormData] = useState<PersonalInfoFormData>({
     name: "Briley Henderson",
     phoneNumber: "+17 123456789",
     email: "briley@example.com",
     dateOfBirth: "01/15/1990",
     address: "123 Main St, New York, NY 10001",
-  })
-  const [errors, setErrors] = useState<Partial<Record<keyof PersonalInfoFormData, string>>>({})
-  const [loading, setLoading] = useState(false)
+  });
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof PersonalInfoFormData, string>>
+  >({});
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (field: keyof PersonalInfoFormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+    setFormData((prev) => ({ ...prev, [field]: value }));
 
     // Clear error when field is edited
     if (errors[field]) {
       setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[field]
-        return newErrors
-      })
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
     }
-  }
+  };
 
   const validate = () => {
-    const newErrors: Partial<Record<keyof PersonalInfoFormData, string>> = {}
+    const newErrors: Partial<Record<keyof PersonalInfoFormData, string>> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required"
+      newErrors.name = "Name is required";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required"
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid"
+      newErrors.email = "Email is invalid";
     }
 
     if (!formData.phoneNumber.trim()) {
-      newErrors.phoneNumber = "Phone number is required"
+      newErrors.phoneNumber = "Phone number is required";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!validate()) {
-      return
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     try {
       // In a real app, this would call an API
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-      router.back()
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      router.back();
     } catch (error) {
-      console.error("Failed to update profile", error)
-      setLoading(false)
+      console.error("Failed to update profile", error);
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <PageTransition>
@@ -86,7 +88,12 @@ export default function EditProfilePage() {
 
         <form onSubmit={handleSubmit} className="p-4 space-y-6">
           <div className="flex justify-center mb-6">
-            <ProfileAvatar name={formData.name} editable onEdit={() => {}} size="lg" />
+            <ProfileAvatar
+              name={formData.name}
+              editable
+              onEdit={() => {}}
+              size="lg"
+            />
           </div>
 
           <motion.div
@@ -104,9 +111,15 @@ export default function EditProfilePage() {
               />
             </FormField>
 
-            <FormField label="Phone Number" htmlFor="phoneNumber" error={errors.phoneNumber}>
+            <FormField
+              label="Phone Number"
+              htmlFor="phoneNumber"
+              error={errors.phoneNumber}
+            >
               <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2">🇺🇸</div>
+                <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                  🇺🇸
+                </div>
                 <Input
                   id="phoneNumber"
                   value={formData.phoneNumber}
@@ -128,7 +141,11 @@ export default function EditProfilePage() {
               />
             </FormField>
 
-            <FormField label="Date of Birth" htmlFor="dateOfBirth" error={errors.dateOfBirth}>
+            <FormField
+              label="Date of Birth"
+              htmlFor="dateOfBirth"
+              error={errors.dateOfBirth}
+            >
               <Input
                 id="dateOfBirth"
                 value={formData.dateOfBirth}
@@ -149,7 +166,11 @@ export default function EditProfilePage() {
             </FormField>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
             <Button
               type="submit"
               className="w-full bg-[#0a0b25] hover:bg-[#1a1b35] dark:bg-blue-600 dark:hover:bg-blue-700 h-12"
@@ -167,6 +188,5 @@ export default function EditProfilePage() {
         </form>
       </div>
     </PageTransition>
-  )
+  );
 }
-

@@ -268,7 +268,6 @@ export default function TransactionHistoryPage() {
               </div>
               <h3 className="text-lg font-medium text-gray-900 dark:text-white">No transactions found</h3>
               <p className="text-gray-500 dark:text-gray-400 text-center mt-2">
-                Try adjusting your search or filter to find what you're looking for.
               </p>
             </div>
           ) : (

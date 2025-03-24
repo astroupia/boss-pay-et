@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { PageHeader } from "@/components/layout/page-header"
-import { SettingsItem } from "@/components/profile/settings-item"
-import { Button } from "@/components/ui/button"
-import { Fingerprint, Lock, Shield, Key } from "lucide-react"
-import { useAuth } from "@/contexts/auth-context"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { PageHeader } from "@/components/layout/page-header";
+import { SettingsItem } from "@/components/profile/settings-item";
+import { Button } from "@/components/ui/button";
+import { Fingerprint, Lock, Shield, Key } from "lucide-react";
+import { useAuth } from "@/contexts/auth-context";
 
 export default function SecurityPage() {
-  const router = useRouter()
-  const { logout } = useAuth()
-  const [biometricAuth, setBiometricAuth] = useState(true)
-  const [twoFactorAuth, setTwoFactorAuth] = useState(false)
+  const router = useRouter();
+  const { logout } = useAuth();
+  const [biometricAuth, setBiometricAuth] = useState(true);
+  const [twoFactorAuth, setTwoFactorAuth] = useState(false);
 
   const handleChangePassword = () => {
-    router.push("/profile/security/change-password")
-  }
+    router.push("/profile/security/change-password");
+  };
 
   const handleChangePIN = () => {
-    router.push("/profile/security/change-pin")
-  }
+    router.push("/profile/security/change-pin");
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -58,12 +58,15 @@ export default function SecurityPage() {
         />
 
         <div className="pt-4">
-          <Button variant="outline" className="w-full text-red-500 border-red-500" onClick={logout}>
+          <Button
+            variant="outline"
+            className="w-full text-red-500 border-red-500"
+            onClick={logout}
+          >
             Log Out
           </Button>
         </div>
       </div>
     </div>
-  )
+  );
 }
-

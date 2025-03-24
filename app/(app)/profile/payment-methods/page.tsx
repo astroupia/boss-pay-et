@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { PageHeader } from "@/components/layout/page-header"
-import { CardItem } from "@/components/ui/card-item"
-import { SectionTitle } from "@/components/ui/section-title"
-import { PageTransition } from "@/components/ui/page-transition"
-import { CreditCard, Wallet, BanknoteIcon as Bank } from "lucide-react"
-import { PaymentMethodCard } from "@/components/ui/payment-method-card"
-import type { CardDetails } from "@/types"
+import { useState } from "react";
+import { PageHeader } from "@/components/layout/page-header";
+import { CardItem } from "@/components/ui/card-item";
+import { SectionTitle } from "@/components/ui/section-title";
+import { PageTransition } from "@/components/ui/page-transition";
+import { CreditCard, Wallet, BanknoteIcon as Bank } from "lucide-react";
+import { PaymentMethodCard } from "@/components/ui/payment-method-card";
+import type { CardDetails } from "@/types";
 
 // Mock data
 const cards: CardDetails[] = [
@@ -31,7 +31,7 @@ const cards: CardDetails[] = [
     color: "blue",
     isDefault: false,
   },
-]
+];
 
 const bankAccounts = [
   {
@@ -41,18 +41,18 @@ const bankAccounts = [
     balance: 39863.62,
     currency: "USD",
   },
-]
+];
 
 export default function PaymentMethodsPage() {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const handleAddCard = () => {
-    setLoading(true)
+    setLoading(true);
     // In a real app, this would navigate to an add card page
     setTimeout(() => {
-      setLoading(false)
-    }, 1000)
-  }
+      setLoading(false);
+    }, 1000);
+  };
 
   return (
     <PageTransition>
@@ -61,7 +61,10 @@ export default function PaymentMethodsPage() {
 
         <div className="p-4 space-y-6">
           <section>
-            <SectionTitle title="Cards" className="text-gray-600 dark:text-gray-400" />
+            <SectionTitle
+              title="Cards"
+              className="text-gray-600 dark:text-gray-400"
+            />
             <div className="space-y-3">
               {cards.map((card) => (
                 <CardItem key={card.id} card={card} />
@@ -70,7 +73,10 @@ export default function PaymentMethodsPage() {
           </section>
 
           <section>
-            <SectionTitle title="Bank Accounts" className="text-gray-600 dark:text-gray-400" />
+            <SectionTitle
+              title="Bank Accounts"
+              className="text-gray-600 dark:text-gray-400"
+            />
             <div className="space-y-3">
               {bankAccounts.map((account) => (
                 <PaymentMethodCard
@@ -92,7 +98,10 @@ export default function PaymentMethodsPage() {
           </section>
 
           <section>
-            <SectionTitle title="Add Payment Method" className="text-gray-600 dark:text-gray-400" />
+            <SectionTitle
+              title="Add Payment Method"
+              className="text-gray-600 dark:text-gray-400"
+            />
             <div className="space-y-3">
               <PaymentMethodCard
                 icon={<CreditCard className="h-5 w-5" />}
@@ -117,6 +126,7 @@ export default function PaymentMethodsPage() {
         </div>
       </div>
     </PageTransition>
-  )
+  );
 }
 
+export const dynamic = "force-dynamic";

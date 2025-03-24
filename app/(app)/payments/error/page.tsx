@@ -1,32 +1,38 @@
-"use client"
+"use client";
 
-import { useRouter, useSearchParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
+import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Suspense } from "react";
 
-export default function PaymentErrorPage() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
+function PaymentErrorContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const amount = searchParams?.get("amount") || "364.00"
-  const currency = searchParams?.get("currency") || "USD"
+  const amount = searchParams?.get("amount") || "364.00";
+  const currency = searchParams?.get("currency") || "USD";
   const errorMessage =
-    searchParams?.get("message") || "Labore sunt culpa excepteur culpa ipsum. Labore occaecat ex nisi mollit."
+    searchParams?.get("message") ||
+    "Labore sunt culpa excepteur culpa ipsum. Labore occaecat ex nisi mollit.";
 
   const handleTryAgain = () => {
-    // Go back to the payment page
-    router.back()
-  }
+    router.back();
+  };
 
   const handleCancel = () => {
-    // Cancel and go to home
-    router.push("/")
-  }
+    router.push("/");
+  };
 
   return (
     <div className="min-h-screen bg-[#fff5f1] flex flex-col items-center justify-center p-6">
       <div className="mb-6">
         <div className="h-16 w-16 rounded-full border-2 border-red-500 flex items-center justify-center">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M18 6L6 18M6 6L18 18"
               stroke="#EF4444"
@@ -55,6 +61,19 @@ export default function PaymentErrorPage() {
         </Button>
       </div>
     </div>
-  )
+  );
 }
 
+export default function PaymentErrorPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
+      <PaymentErrorContent />
+    </Suspense>
+  );
+}

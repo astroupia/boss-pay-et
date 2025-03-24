@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { PageHeader } from "@/components/layout/page-header"
-import { Button } from "@/components/ui/button"
-import { Check } from "lucide-react"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { PageHeader } from "@/components/layout/page-header";
+import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
 
 interface Language {
-  code: string
-  name: string
-  nativeName: string
-  flag: string
+  code: string;
+  name: string;
+  nativeName: string;
+  flag: string;
 }
 
 export default function LanguagePage() {
-  const router = useRouter()
-  const [selectedLanguage, setSelectedLanguage] = useState("en")
+  const router = useRouter();
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
 
   const languages: Language[] = [
     { code: "en", name: "English", nativeName: "English", flag: "🇺🇸" },
@@ -28,12 +28,12 @@ export default function LanguagePage() {
     { code: "zh", name: "Chinese", nativeName: "中文", flag: "🇨🇳" },
     { code: "ja", name: "Japanese", nativeName: "日本語", flag: "🇯🇵" },
     { code: "ar", name: "Arabic", nativeName: "العربية", flag: "🇸🇦" },
-  ]
+  ];
 
   const handleSave = () => {
     // In a real app, this would save the language preference
-    router.back()
-  }
+    router.back();
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -51,7 +51,9 @@ export default function LanguagePage() {
                 <div className="text-2xl">{language.flag}</div>
                 <div>
                   <div className="font-medium text-left">{language.name}</div>
-                  <div className="text-sm text-gray-500">{language.nativeName}</div>
+                  <div className="text-sm text-gray-500">
+                    {language.nativeName}
+                  </div>
                 </div>
               </div>
               {selectedLanguage === language.code && (
@@ -68,6 +70,5 @@ export default function LanguagePage() {
         </Button>
       </div>
     </div>
-  )
+  );
 }
-

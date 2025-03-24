@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { PageHeader } from "@/components/layout/page-header"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { CardSelector } from "@/components/ui/card-selector"
-import { IconInput } from "@/components/ui/icon-input"
-import { CreditCard, Calendar, Lock } from "lucide-react"
-import { PageTransition } from "@/components/ui/page-transition"
-import { TransactionSummary } from "@/components/ui/transaction-summary"
-import { AmountInput } from "@/components/ui/amount-input"
-import type { Account } from "@/types"
-import { LoadingSpinner } from "@/components/ui/loading-spinner"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { PageHeader } from "@/components/layout/page-header";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { CardSelector } from "@/components/ui/card-selector";
+import { IconInput } from "@/components/ui/icon-input";
+import { CreditCard, Calendar, Lock } from "lucide-react";
+import { PageTransition } from "@/components/ui/page-transition";
+import { TransactionSummary } from "@/components/ui/transaction-summary";
+import { AmountInput } from "@/components/ui/amount-input";
+import type { Account } from "@/types";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 // Mock data
 const mockAccounts: Account[] = [
@@ -37,54 +37,64 @@ const mockAccounts: Account[] = [
     currency: "EUR",
     expiryDate: "09/25",
   },
-]
+];
 
 export default function CardPaymentPage() {
-  const router = useRouter()
-  const [selectedAccount, setSelectedAccount] = useState<Account>(mockAccounts[0])
-  const [cardNumber, setCardNumber] = useState("")
-  const [expiryDate, setExpiryDate] = useState("")
-  const [cvv, setCvv] = useState("")
-  const [amount, setAmount] = useState("")
-  const [description, setDescription] = useState("")
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const [selectedAccount, setSelectedAccount] = useState<Account>(
+    mockAccounts[0]
+  );
+  const [cardNumber, setCardNumber] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [cvv, setCvv] = useState("");
+  const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleCardNumberChange = (value: string) => {
     // Format card number with spaces every 4 digits
     const formatted = value
       .replace(/\s/g, "")
       .replace(/(.{4})/g, "$1 ")
-      .trim()
-    setCardNumber(formatted)
-  }
+      .trim();
+    setCardNumber(formatted);
+  };
 
   const handleExpiryDateChange = (value: string) => {
     // Format expiry date as MM/YY
-    const cleaned = value.replace(/\D/g, "")
+    const cleaned = value.replace(/\D/g, "");
     if (cleaned.length <= 2) {
-      setExpiryDate(cleaned)
+      setExpiryDate(cleaned);
     } else {
-      setExpiryDate(`${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}`)
+      setExpiryDate(`${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}`);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
     try {
       // In a real app, this would call an API
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Navigate to success page with amount
-      router.push(`/payments/success?amount=${amount}&currency=${selectedAccount.currency}`)
+      router.push(
+        `/payments/success?amount=${amount}&currency=${selectedAccount.currency}`
+      );
     } catch (error) {
-      console.error("Payment failed:", error)
-      router.push(`/payments/error?amount=${amount}&currency=${selectedAccount.currency}`)
+      console.error("Payment failed:", error);
+      router.push(
+        `/payments/error?amount=${amount}&currency=${selectedAccount.currency}`
+      );
     }
-  }
+  };
 
-  const isFormValid = cardNumber.length >= 19 && expiryDate.length === 5 && cvv.length >= 3 && amount.length > 0
+  const isFormValid =
+    cardNumber.length >= 19 &&
+    expiryDate.length === 5 &&
+    cvv.length >= 3 &&
+    amount.length > 0;
 
   return (
     <PageTransition>
@@ -92,7 +102,11 @@ export default function CardPaymentPage() {
         <PageHeader title="Card Payment" />
 
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
-          <CardSelector accounts={mockAccounts} onSelect={setSelectedAccount} defaultSelected={selectedAccount.id} />
+          <CardSelector
+            accounts={mockAccounts}
+            onSelect={setSelectedAccount}
+            defaultSelected={selectedAccount.id}
+          />
 
           <div className="bg-white dark:bg-gray-800 rounded-xl p-4 space-y-4 shadow-sm">
             <IconInput
@@ -129,7 +143,11 @@ export default function CardPaymentPage() {
             <AmountInput
               value={amount}
               onChange={setAmount}
-              currency={selectedAccount.currency === "USD" ? "$" : selectedAccount.currency}
+              currency={
+                selectedAccount.currency === "USD"
+                  ? "$"
+                  : selectedAccount.currency
+              }
             />
           </div>
 
@@ -143,7 +161,11 @@ export default function CardPaymentPage() {
             />
           </div>
 
-          <TransactionSummary amount={amount || "0"} fee="0" currency={selectedAccount.currency} />
+          <TransactionSummary
+            amount={amount || "0"}
+            fee="0"
+            currency={selectedAccount.currency}
+          />
 
           <Button
             type="submit"
@@ -161,6 +183,5 @@ export default function CardPaymentPage() {
         </form>
       </div>
     </PageTransition>
-  )
+  );
 }
-

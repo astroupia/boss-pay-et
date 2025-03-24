@@ -1,16 +1,17 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { PageHeader } from "@/components/layout/page-header"
-import { useSearchParams } from "next/navigation"
-import { useAccounts } from "@/app/(app)/hooks/use-accounts"
-import useContacts from "@/app/(app)/hooks/use-contacts"
-import BottomNavigation from "@/components/layout/bottom-navigation"
-import { PageTransition } from "@/components/ui/page-transition"
-import { useRouter } from "next/navigation"
-import { TransferForm } from "@/components/transfer/transfer-form"
-import { LoadingSpinner } from "@/components/ui/loading-spinner"
-import type { Account, Contact } from "@/types"
+
+import { useState, useEffect } from "react";
+import { PageHeader } from "@/components/layout/page-header";
+import { useSearchParams } from "next/navigation";
+import { useAccounts } from "@/lib/hooks/use-accounts";
+import { useContacts } from "@/lib/hooks/use-contacts";
+import BottomNavigation from "@/components/layout/bottom-navigation";
+import { PageTransition } from "@/components/ui/page-transition";
+import { useRouter } from "next/navigation";
+import { TransferForm } from "@/components/transfer/transfer-form";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { Account, Contact } from "@/types";
 
 export default function NewTransferPage() {
   const router = useRouter()
