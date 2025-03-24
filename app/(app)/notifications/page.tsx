@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { NotificationCard } from "@/components/ui/notification-card";
-import { useNotifications } from "@/lib/hooks/use-notifications";
+import { useNotifications } from "@/app/(app)/hooks/use-notifications";
 import { AppLayout } from "@/components/layout/app-layout";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { AnimatedCard } from "@/components/ui/animated-card";
@@ -95,5 +95,3 @@ export default function NotificationsPage() {
     </AppLayout>
   );
 }
-
-// export const dynamic = "force-dynamic";
