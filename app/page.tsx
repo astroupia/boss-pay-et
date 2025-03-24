@@ -17,14 +17,18 @@ import { useTransactions } from "@/lib/hooks/use-transactions";
 import { useContacts } from "@/lib/hooks/use-contacts";
 
 export default function Dashboard() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  const { accounts } = useAccounts();
-  const { transactions } = useTransactions();
-  const { contacts } = useContacts();
+
+  const { user, loading} = useAuth()
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
+  const { accounts } = useAccounts()
+  const { transactions } = useTransactions()
+  const { contacts } = useContacts()
 
   useEffect(() => {
+    
+
+
     if (!loading && !user) {
       router.push("/auth/signin");
       return;
@@ -34,6 +38,7 @@ export default function Dashboard() {
     if (user) {
       setIsLoading(false);
     }
+
   }, [user, loading, router]);
 
   // Show loading state while checking authentication
@@ -144,6 +149,7 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col min-h-screen bg-[#0a0b25]">
       {/* Header */}
+
       {user && <UserHeader user={user} rightElement={cardIcon} />}
 
       {/* Card Carousel */}
